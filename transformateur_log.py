@@ -5,6 +5,7 @@ Authors: Honore Nintunze, Antonin Durey
 """
 
 import sys
+import re
 from io import StringIO as sio
 
 class TransformateurLog:
@@ -42,6 +43,17 @@ class EntreeSortieLog:
             res.append(self.factory_message.create_message(line))
 
         return res
+
+class Formatteur:
+
+    def __init__(self):
+        self.regex = re.compile(r'^[0-9]{4}(-[0-9]{2}){2}, ([0-9]|10), .*$')
+
+    def parse(self, msg):
+        return self.regex.match(msg.texte) != None
+
+    def parse_logs(self, messages):
+        return all([self.parse(item) for item in messages])
 
 class FactoryMessage:
     pass
